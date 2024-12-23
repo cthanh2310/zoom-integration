@@ -67,6 +67,7 @@ app.post('/create-meeting', async (req, res) => {
       }
     );
 
+    console.log('Meeting created:', response.data);
     res.json(response.data); // Returns meeting details
   } catch (error) {
     console.error('Error creating meeting:', error.response.data);
