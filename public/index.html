@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zoom Meeting</title>
+  </head>
+  <body>
+    <h1>Zoom Meeting Creator</h1>
+    <button id="authorize">Authorize App</button>
+    <br /><br />
+    <input type="text" id="userId" placeholder="Enter User Email/ID" />
+    <button id="createMeeting">Create Meeting</button>
+    <br /><br />
+    <div id="meetingDetails"></div>
+
+    <script>
+      document.getElementById('authorize').addEventListener('click', () => {
+        window.location.href = '/authorize';
+      });
+
+      document
+        .getElementById('createMeeting')
+        .addEventListener('click', async () => {
+          const userId = document.getElementById('userId').value;
+          if (!userId) {
+            alert('Please enter a user email or ID.');
+            return;
+          }
+
+          const response = await fetch('/create-meeting', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+          });
+
+          console.log('response', response);
+          if (response.ok) {
+            const meeting = await response.json();
+            document.getElementById('meetingDetails').innerHTML = `
+          <p>Meeting Created:</p>
+          <p>Join URL: <a href="${meeting.join_url}" target="_blank">${meeting.join_url}</a></p>
+          <p>Start URL: <a href="${meeting.start_url}" target="_blank">${meeting.start_url}</a></p>
+        `;
+          } else {
+            alert('Failed to create meeting.');
+          }
+        });
+    </script>
+  </body>
+</html>
