@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zoom Video SDK Integration</title>
+  <script src="@zoom/videosdk-ui-toolkit/index.js" type="module"></script>
+</head>
+<body>
+  <h2>Start or Join Zoom Session</h2>
+  <button onclick="startSession()">Start Session</button>
+  
+  <script>
+    async function startSession() {
+      try {
+        const response = await fetch('/create-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({})
+        });
+
+        const data = await response.json();
+        console.log('Response Data:', data);
+
+        const client = ZoomVideo.createClient(); // Create a Video SDK client
+        const sessionId = data.session_id;
+        const token = data.fe_token;
+
+        // Initialize the Zoom Video SDK
+        client.init('en-US', 'CDN'); // Language and source type
+
+        // Join the Zoom session
+        client.join(
+          token,          // Token generated from backend
+          sessionId,      // Session ID
+          'user1'         // User name
+        )
+          .then(() => {
+            console.log('Joined session successfully');
+          })
+          .catch((error) => {
+            console.error('Error joining session:', error);
+          });
+      } catch (error) {
+        console.error('Error starting session:', error);
+      }
+    }
+  </script>
+
+  <script src="https://source.zoom.us/videosdk/1.9.0/lib/zoom-video.min.js"></script>
+</body>
+</html>
