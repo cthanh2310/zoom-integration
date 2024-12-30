@@ -4,7 +4,7 @@ var sessionContainer = document.getElementById('sessionContainer')
 var authEndpoint = 'http://localhost:3333/create-session'
 var config = {
     videoSDKJWT: '',
-    sessionName: 'Kris and his friends 10',
+    sessionName: 'Kris and his friends 11' + Date.now(),
     userName: 'JavaScript',
     sessionPasscode: '123456',
     features: ['preview', 'video', 'audio', 'settings', 'users', 'chat', 'share'],

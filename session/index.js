@@ -11,13 +11,13 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cors());
 
-function generateVideoSdkSessionJwt(appKey, appSecret, sessionId, userId, role, tokenExpiry = 3600) {
+function generateVideoSdkSessionJwt(appKey, appSecret, sessionName, userId, role, tokenExpiry = 3600) {
     const iat = Math.floor(Date.now() / 1000); // Current timestamp in seconds
     const exp = iat + tokenExpiry; // Token expiry timestamp
   
     const payload = {
       app_key: appKey,
-      tpc: sessionId,
+      tpc: sessionName,
       role_type: role, // Role (0: attendee, 1: host)
       user_identity: userId,
       version: 1,
@@ -76,7 +76,7 @@ app.post('/create-session', async (req, res) => {
     console.log('Session info:', response.data);
 
     // host token
-    const feToken = generateVideoSdkSessionJwt(process.env.ZOOM_SDK_KEY, process.env.ZOOM_SDK_SECRET, response.data.session_id, 'user1', 1);
+    const feToken = generateVideoSdkSessionJwt(process.env.ZOOM_SDK_KEY, process.env.ZOOM_SDK_SECRET, response.data.session_name, 'user1', 1);
     console.log('FE TOKEN:', feToken);
     response.data.fe_token = feToken;
     res.json(response.data);
