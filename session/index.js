@@ -49,22 +49,6 @@ app.post('/create-session', async (req, res) => {
         session_password: req.body.sessionPasscode,
         settings: {
             auto_recording: 'cloud',
-            host_video: true,
-            participant_video: true,
-            cn_meeting: false,
-            in_meeting: false,
-            join_before_host: true,
-            mute_upon_entry: false,
-            watermark: false,
-            use_pmi: false,
-            approval_type: 2,
-            registration_type: 1,
-            audio: 'voip',
-            auto_delete_cmr: true,
-            alternative_hosts: 'string',
-            close_registration: false,
-            waiting_room: false,
-            registrants_email_notification: true,
         }
       },
       {
